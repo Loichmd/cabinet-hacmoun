@@ -1,0 +1,44 @@
+{
+  "name": "Orthodontie & Aligneurs",
+  "order": 2,
+  "icon": "ortho",
+  "shortText": "Aligner les sourires en toute discrétion, grâce aux gouttières transparentes nouvelle génération.",
+  "cardItems": [
+    "Invisalign Platinum",
+    "Appareils esthétiques",
+    "Simulation numérique",
+    "Suivi personnalisé"
+  ],
+  "title": "Aligner votre sourire, en toute discrétion",
+  "intro": "L'orthodontie invisible permet aujourd'hui de corriger l'alignement de vos dents sans bague apparente, sans contrainte sociale, et avec une précision pilotée numériquement du premier au dernier jour.",
+  "overview": [
+    "Les aligneurs Invisalign sont des gouttières transparentes, amovibles et fabriquées sur-mesure. Vous les changez régulièrement pour déplacer vos dents progressivement, en douceur, vers leur position idéale.",
+    "Discrets, confortables et amovibles le temps des repas, ils s'intègrent naturellement à un quotidien exigeant — sans rien révéler de votre traitement."
+  ],
+  "treatments": [
+    { "title": "Invisalign adulte", "text": "La référence de l'orthodontie invisible, pour corriger chevauchements, espaces et décalages avec élégance." },
+    { "title": "Invisalign adolescent", "text": "Une solution adaptée aux plus jeunes, avec un suivi rassurant et des résultats prévisibles." },
+    { "title": "Appareils céramique discrets", "text": "Lorsqu'un appareil fixe s'impose, des attaches céramique couleur émail, les plus discrètes possibles." },
+    { "title": "Contention", "text": "Pérenniser votre nouveau sourire grâce à des dispositifs de maintien sur-mesure." }
+  ],
+  "process": [
+    { "title": "Scan & simulation", "text": "Empreinte numérique iTero et simulation ClinCheck : vous visualisez votre sourire final dès la 1ʳᵉ séance." },
+    { "title": "Validation du plan", "text": "Nous affinons ensemble chaque détail du résultat avant de lancer la fabrication de vos aligneurs." },
+    { "title": "Port des aligneurs", "text": "Vous portez chaque jeu de gouttières environ deux semaines, en toute discrétion." },
+    { "title": "Suivi & contention", "text": "Contrôles réguliers — y compris à distance — puis pose d'une contention pour stabiliser le résultat." }
+  ],
+  "cabinet": [
+    { "title": "Praticien Invisalign Platinum", "text": "Une expertise certifiée au plus haut niveau, gage de plans de traitement maîtrisés." },
+    { "title": "Scanner intra-oral iTero", "text": "Fini la pâte à empreinte : un confort total et une précision numérique irréprochable." },
+    { "title": "Suivi numérique à distance", "text": "Moins de déplacements, un accompagnement continu, pensé pour les emplois du temps chargés." }
+  ],
+  "practitionerInitials": "SC",
+  "practitionerName": "Dr. Sarah Cohen",
+  "practitionerRole": "Orthodontie · Aligneurs",
+  "practitionerNote": "Certifiée Invisalign Platinum, elle redessine les sourires avec une approche numérique d'avant-garde.",
+  "stats": [
+    { "value": "Platinum", "label": "Certification Invisalign" },
+    { "value": "6–18", "label": "Mois en moyenne" },
+    { "value": "100%", "label": "Discrétion" }
+  ]
+}

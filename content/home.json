@@ -1,0 +1,21 @@
+{
+  "heroEyebrow": "Cabinet dentaire d'exception · Nice",
+  "heroTitleLine1": "Redéfinir votre",
+  "heroTitleEmphasis": "expérience",
+  "heroTitleLine3": "dentaire",
+  "heroSubtitle": "Implantologie, orthodontie invisible et esthétique du sourire, réunies dans un écrin pensé pour votre sérénité. Une médecine dentaire de précision, au service de votre beauté naturelle.",
+  "heroStats": [
+    { "value": "15+", "label": "Années d'expertise" },
+    { "value": "4 800+", "label": "Patients accompagnés" },
+    { "value": "2 000+", "label": "Implants posés" },
+    { "value": "98%", "label": "Taux de satisfaction" }
+  ],
+  "aboutHeading": "Une médecine dentaire pensée comme un art du détail",
+  "aboutParagraph": "Fondé par le Dr. David Hacmoun, le cabinet réunit une équipe de praticiens d'exception autour d'une conviction : chaque sourire mérite une attention sur-mesure. Nous conjuguons les technologies les plus avancées — radiographie 3D, scanner CBCT, laser dentaire — à une approche profondément humaine.",
+  "aboutPoints": [
+    "Diagnostic numérique de précision",
+    "Plateau technique dernière génération",
+    "Confort & sérénité absolus",
+    "Accompagnement personnalisé"
+  ]
+}

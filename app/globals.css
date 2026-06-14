@@ -1,0 +1,209 @@
+@import "tailwindcss";
+
+/* ============================================================
+   CABINET HACMOUN — Editorial Luxury Design System
+   Palette: warm cream · linen · champagne gold · espresso
+   ============================================================ */
+
+@theme inline {
+  /* Surfaces */
+  --color-porcelain: #fffdf8;
+  --color-cream: #faf6ee;
+  --color-linen: #f2ebdc;
+  --color-sand: #e7d9c1;
+  --color-greige: #cbb99c;
+
+  /* Accents */
+  --color-champagne: #c2a36b;
+  --color-gold: #ad8b4f;
+  --color-gold-soft: #d8c19a;
+
+  /* Ink */
+  --color-espresso: #211b13;
+  --color-ink: #4a4035;
+  --color-mute: #8a7e6d;
+  --color-hairline: rgba(33, 27, 19, 0.1);
+
+  /* Fonts (bound in layout.tsx) */
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-jost);
+
+  /* Motion */
+  --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+:root {
+  --background: #faf6ee;
+  --foreground: #211b13;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-feature-settings: "ss01", "cv01";
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-champagne);
+  color: #fff;
+}
+
+/* Display typography ------------------------------------------------ */
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+  font-optical-sizing: auto;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.tracking-eyebrow {
+  letter-spacing: 0.32em;
+}
+
+/* Film-grain overlay (fixed, never on scrolling content) ------------ */
+.grain::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Hairline divider -------------------------------------------------- */
+.rule-gold {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-champagne) 50%,
+    transparent
+  );
+}
+
+/* Double-bezel shell ------------------------------------------------ */
+.bezel {
+  background: rgba(33, 27, 19, 0.04);
+  border: 1px solid var(--color-hairline);
+  border-radius: 2rem;
+  padding: 0.4rem;
+}
+.bezel-core {
+  border-radius: calc(2rem - 0.4rem);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+/* Soft ambient elevation (no harsh shadows) ------------------------- */
+.lift {
+  box-shadow:
+    0 1px 1px rgba(33, 27, 19, 0.02),
+    0 12px 28px -16px rgba(33, 27, 19, 0.18),
+    0 40px 80px -50px rgba(33, 27, 19, 0.28);
+}
+.lift-soft {
+  box-shadow: 0 24px 60px -40px rgba(33, 27, 19, 0.35);
+}
+
+/* Scroll reveal ----------------------------------------------------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(38px);
+  filter: blur(6px);
+  transition:
+    opacity 0.9s var(--ease-lux),
+    transform 0.9s var(--ease-lux),
+    filter 0.9s var(--ease-lux);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: transform, opacity;
+}
+[data-reveal].is-in {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
+
+/* Slow ken-burns drift for hero video ------------------------------- */
+@keyframes kenburns {
+  0% {
+    transform: scale(1.08) translate3d(0, 0, 0);
+  }
+  100% {
+    transform: scale(1.18) translate3d(-1.5%, -1.5%, 0);
+  }
+}
+.kenburns {
+  animation: kenburns 28s var(--ease-lux) infinite alternate;
+}
+
+/* Marquee for trust strip ------------------------------------------- */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee {
+  animation: marquee 34s linear infinite;
+}
+
+/* Shimmer underline for links --------------------------------------- */
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s var(--ease-lux);
+}
+.link-underline:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Floating scroll cue ------------------------------------------------ */
+@keyframes nudge {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(7px);
+    opacity: 1;
+  }
+}
+.nudge {
+  animation: nudge 2.2s ease-in-out infinite;
+}

@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:cabinet-hacmoun.vercel.app)",
+      "WebFetch(domain:www.mougins-aesthetic-clinic.com)",
+      "Bash(npm --version)",
+      "Bash(curl -sI \"https://cabinet-hacmoun.vercel.app/assets/video/hero.mp4\")"
+    ]
+  },
+  "disabledMcpjsonServers": [
+    "agentvibes",
+    "brevo_all",
+    "wix-mcp-remote"
+  ]
+}

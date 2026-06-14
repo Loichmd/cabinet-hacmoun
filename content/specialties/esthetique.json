@@ -1,0 +1,44 @@
+{
+  "name": "Esthétique du Sourire",
+  "order": 3,
+  "icon": "esthetique",
+  "shortText": "Sublimer votre sourire avec naturel, du Digital Smile Design aux facettes céramique.",
+  "cardItems": [
+    "Facettes céramique",
+    "Blanchiment professionnel",
+    "Smile Design",
+    "Couronnes céramique"
+  ],
+  "title": "Sublimer votre sourire, avec un naturel absolu",
+  "intro": "La dentisterie esthétique allie l'art et la science pour révéler la beauté de votre sourire — toujours dans le respect de votre visage, de votre personnalité et d'un naturel parfait.",
+  "overview": [
+    "Grâce au Digital Smile Design, votre futur sourire est conçu numériquement, en harmonie avec les proportions de votre visage. Vous le validez avant le moindre soin, sans aucune surprise.",
+    "Facettes céramique ultra-fines, blanchiment professionnel, couronnes esthétiques : nous sélectionnons la solution la plus respectueuse de vos dents naturelles pour un résultat lumineux et durable."
+  ],
+  "treatments": [
+    { "title": "Facettes céramique", "text": "De fines pelures de céramique qui transforment la forme, la teinte et l'harmonie de votre sourire, en préservant l'émail." },
+    { "title": "Blanchiment professionnel", "text": "Un éclaircissement maîtrisé au fauteuil et/ou à domicile, pour un sourire lumineux sans agresser l'émail." },
+    { "title": "Digital Smile Design", "text": "La conception numérique de votre sourire, prévisualisée et validée avant tout traitement." },
+    { "title": "Couronnes céramique", "text": "Des restaurations sur-mesure d'un réalisme parfait, en céramique sans métal." }
+  ],
+  "process": [
+    { "title": "Analyse esthétique", "text": "Étude de votre sourire en harmonie avec les lignes de votre visage et vos souhaits." },
+    { "title": "Mock-up & DSD", "text": "Projection de votre futur sourire, que vous pouvez visualiser et essayer avant de décider." },
+    { "title": "Préparation mini-invasive", "text": "Une intervention la plus conservatrice possible, respectueuse de vos dents naturelles." },
+    { "title": "Pose & finitions", "text": "Pose des facettes ou couronnes et réglages minutieux pour un rendu d'un naturel saisissant." }
+  ],
+  "cabinet": [
+    { "title": "Laboratoire céramiste partenaire", "text": "Une collaboration étroite avec des maîtres céramistes pour un sur-mesure d'exception." },
+    { "title": "Concept Digital Smile Design", "text": "La technologie qui rend votre résultat prévisible, validé en amont, sans surprise." },
+    { "title": "Approche conservatrice", "text": "Préserver le maximum de tissu dentaire naturel reste notre priorité absolue." }
+  ],
+  "practitionerInitials": "ML",
+  "practitionerName": "Dr. Marc Lévy",
+  "practitionerRole": "Esthétique · Facettes",
+  "practitionerNote": "Expert du Digital Smile Design, il sublime chaque sourire avec un sens aigu de l'harmonie naturelle.",
+  "stats": [
+    { "value": "DSD", "label": "Sourire conçu sur-mesure" },
+    { "value": "Sans métal", "label": "Céramique haute esthétique" },
+    { "value": "Naturel", "label": "Résultat indétectable" }
+  ]
+}

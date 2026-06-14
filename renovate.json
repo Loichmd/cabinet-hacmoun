@@ -1,0 +1,24 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "labels": ["dépendances"],
+  "schedule": ["before 6am on monday"],
+  "prHourlyLimit": 2,
+  "packageRules": [
+    {
+      "description": "Fusionner automatiquement les petites mises à jour sûres",
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "automerge": true
+    },
+    {
+      "description": "Grouper les paquets Keystatic",
+      "matchPackagePatterns": ["@keystatic/"],
+      "groupName": "Keystatic"
+    },
+    {
+      "description": "Grouper Next.js et React",
+      "matchPackageNames": ["next", "react", "react-dom", "eslint-config-next"],
+      "groupName": "Next.js & React"
+    }
+  ]
+}
