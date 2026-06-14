@@ -18,7 +18,9 @@ import { config, fields, collection, singleton } from "@keystatic/core";
 export default config({
   // Édition via GitHub dès que les clés de l'app GitHub sont présentes
   // (sur Vercel) ; sinon édition locale des fichiers (dev sur ton ordinateur).
-  storage: process.env.KEYSTATIC_GITHUB_CLIENT_ID
+  // ⚠️ On teste une variable NEXT_PUBLIC_ : elle est visible à la fois côté
+  // serveur ET côté navigateur. Sinon le client retombe en mode "local".
+  storage: process.env.NEXT_PUBLIC_KEYSTATIC_GITHUB_APP_SLUG
     ? {
         kind: "github",
         repo: { owner: "Loichmd", name: "cabinet-hacmoun" },
