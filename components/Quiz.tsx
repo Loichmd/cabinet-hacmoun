@@ -474,11 +474,9 @@ export default function Quiz({
               type="button"
               onClick={back}
               aria-label="Revenir à la dernière question"
-              className="group mb-5 inline-flex items-center gap-2.5 rounded-full py-2 pl-2 pr-5 text-[0.62rem] uppercase tracking-[0.16em] text-mute ring-1 ring-hairline transition-colors hover:text-espresso hover:ring-espresso/25 sm:mb-7"
+              className="group -ml-1 mb-6 inline-flex items-center gap-2 px-1 py-2 text-[0.6rem] uppercase tracking-[0.16em] text-mute transition-colors hover:text-espresso sm:mb-8"
             >
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-espresso/[0.05] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-x-0.5">
-                <ArrowLeft className="h-3.5 w-3.5" />
-              </span>
+              <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-x-0.5" />
               Retour
             </button>
 
@@ -707,212 +705,138 @@ export default function Quiz({
   const isCorrect = answered && picked === q.answer;
   const progress = ((index + (answered ? 1 : 0)) / total) * 100;
 
-  /* Série de bonnes réponses consécutives, jusqu'à la question en cours */
-  let streak = 0;
-  for (let i = index; i >= 0; i--) {
-    if (answers[i] !== null && answers[i] === questions[i].answer) streak++;
-    else break;
-  }
-
   return (
     <section
       ref={topRef}
-      className="scroll-mt-24 bg-cream px-5 pt-28 pb-14 sm:px-6 sm:pt-32 sm:pb-20 lg:px-10 lg:pb-24"
+      className="flex min-h-svh scroll-mt-24 flex-col justify-center bg-cream px-5 pt-28 pb-16 sm:px-6 sm:pt-32 sm:pb-20 lg:px-10"
     >
-      <div className="mx-auto max-w-3xl">
-        {/* Progression -------------------------------------------- */}
-        <div className="mb-5 sm:mb-7">
-          <div className="flex items-center justify-between gap-4">
-            <button
-              type="button"
-              onClick={back}
-              aria-label={
-                index > 0
-                  ? "Revenir à la question précédente"
-                  : "Revenir à la présentation du quiz"
-              }
-              className="group inline-flex items-center gap-2.5 rounded-full py-2 pl-2 pr-5 text-[0.62rem] uppercase tracking-[0.16em] text-mute ring-1 ring-hairline transition-colors hover:text-espresso hover:ring-espresso/25"
-            >
-              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-espresso/[0.05] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-x-0.5">
-                <ArrowLeft className="h-3.5 w-3.5" />
-              </span>
-              Retour
-            </button>
-            <span className="font-display text-sm text-mute">
-              <span className="text-espresso">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <span className="mx-1 text-greige">/</span>
-              {String(total).padStart(2, "0")}
+      <div className="mx-auto w-full max-w-2xl">
+        {/* En-tête : retour + compteur + filet de progression ------ */}
+        <div className="flex items-center justify-between gap-4">
+          <button
+            type="button"
+            onClick={back}
+            aria-label={
+              index > 0
+                ? "Revenir à la question précédente"
+                : "Revenir à la présentation du quiz"
+            }
+            className="group -ml-1 inline-flex items-center gap-2 px-1 py-2 text-[0.6rem] uppercase tracking-[0.16em] text-mute transition-colors hover:text-espresso"
+          >
+            <ArrowLeft className="h-3.5 w-3.5 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-x-0.5" />
+            Retour
+          </button>
+          <span className="font-display text-sm text-mute">
+            <span className="text-espresso">
+              {String(index + 1).padStart(2, "0")}
             </span>
-          </div>
-
-          <div className="mt-3 h-[3px] w-full overflow-hidden rounded-full bg-espresso/[0.08]">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-gold-soft to-champagne transition-[width] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-
-          <div className="mt-3 flex items-center justify-between gap-4">
-            <div className="flex flex-wrap gap-1.5">
-              {questions.map((item, i) => {
-                const a = answers[i];
-                const state =
-                  a === null
-                    ? i === index
-                      ? "now"
-                      : "todo"
-                    : a === item.answer
-                      ? "ok"
-                      : "ko";
-                return (
-                  <span
-                    key={item.question}
-                    className={`h-1.5 rounded-full transition-all duration-500 ${
-                      state === "ok"
-                        ? "w-5 bg-sage"
-                        : state === "ko"
-                          ? "w-5 bg-clay"
-                          : state === "now"
-                            ? "w-7 bg-champagne"
-                            : "w-2.5 bg-espresso/10"
-                    }`}
-                  />
-                );
-              })}
-            </div>
-
-            {streak >= 2 && (
-              <span className="quiz-in shrink-0 whitespace-nowrap text-[0.6rem] uppercase tracking-[0.16em] text-sage">
-                Série de {streak}
-              </span>
-            )}
-          </div>
+            <span className="mx-1 text-greige">/</span>
+            {String(total).padStart(2, "0")}
+          </span>
         </div>
 
-        {/* Carte question ----------------------------------------- */}
-        <div className="overflow-hidden rounded-[1.75rem] border border-hairline bg-porcelain sm:rounded-[2.25rem]">
-          <div className="px-5 pt-8 pb-6 sm:px-10 sm:pt-12 sm:pb-9">
-            <span
-              key={`${q.question}-theme`}
-              className="quiz-in inline-flex items-center gap-2 text-[0.6rem] uppercase tracking-eyebrow text-gold"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-champagne" />
-              {q.theme}
-            </span>
-            <p
-              key={q.question}
-              className="quiz-in mt-4 font-display text-[clamp(1.45rem,6.2vw,2.35rem)] font-light leading-[1.18] text-espresso text-balance"
-            >
-              {fr(q.question)}
-            </p>
+        <div className="mt-3 h-px w-full bg-espresso/10">
+          <div
+            className="h-px bg-champagne transition-[width] duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
 
-            <div className="mt-7 grid gap-3 sm:mt-9 sm:grid-cols-2 sm:gap-4">
-              {(["vrai", "faux"] as const).map((choice) => {
-                const isPicked = picked === choice;
-                const isRight = q.answer === choice;
+        {/* Question ----------------------------------------------- */}
+        <span
+          key={`${q.question}-theme`}
+          className="quiz-in mt-12 inline-flex items-center gap-2 text-[0.6rem] uppercase tracking-eyebrow text-gold sm:mt-14"
+        >
+          <span className="h-1.5 w-1.5 rounded-full bg-champagne" />
+          {q.theme}
+        </span>
 
-                let tone =
-                  "border-hairline bg-cream text-espresso active:scale-[0.985] hover:border-champagne/60 hover:bg-linen";
-                if (answered) {
-                  if (isRight) tone = "border-sage/45 bg-sage-soft text-sage";
-                  else if (isPicked)
-                    tone = "border-clay/45 bg-clay-soft text-clay";
-                  else tone = "border-hairline bg-cream/60 text-mute opacity-60";
+        <p
+          key={q.question}
+          className="quiz-in mt-5 font-display text-[clamp(1.6rem,7vw,2.6rem)] font-light leading-[1.14] text-espresso text-balance"
+        >
+          {fr(q.question)}
+        </p>
+
+        {/* Choix — toujours côte à côte --------------------------- */}
+        <div className="mt-9 grid grid-cols-2 gap-3 sm:mt-11 sm:gap-4">
+          {(["vrai", "faux"] as const).map((choice) => {
+            const isPicked = picked === choice;
+            const isRight = q.answer === choice;
+
+            let tone =
+              "border-espresso/15 text-espresso hover:border-champagne hover:bg-porcelain active:scale-[0.985]";
+            if (answered) {
+              if (isRight) tone = "border-sage/50 bg-sage-soft text-sage";
+              else if (isPicked) tone = "border-clay/50 bg-clay-soft text-clay";
+              else tone = "border-espresso/8 text-mute opacity-45";
+            }
+
+            return (
+              <button
+                key={choice}
+                type="button"
+                onClick={() => pick(choice)}
+                disabled={answered}
+                aria-label={
+                  choice === "vrai" ? "Répondre Vrai" : "Répondre Faux"
                 }
-
-                return (
-                  <button
-                    key={choice}
-                    type="button"
-                    onClick={() => pick(choice)}
-                    disabled={answered}
-                    aria-label={
-                      choice === "vrai" ? "Répondre Vrai" : "Répondre Faux"
-                    }
-                    className={`${isPicked ? "quiz-pop " : ""}flex min-h-[4.5rem] items-center justify-between gap-3 rounded-[1.15rem] border px-6 py-5 text-left transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:min-h-[5.5rem] sm:rounded-[1.35rem] ${tone}`}
+                className={`${isPicked ? "quiz-pop " : ""}flex min-h-[4.25rem] items-center justify-center gap-2.5 rounded-[1.2rem] border transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:min-h-[5rem] ${tone}`}
+              >
+                <span className="font-display text-2xl leading-none sm:text-[1.7rem]">
+                  {choice === "vrai" ? "Vrai" : "Faux"}
+                </span>
+                {answered && (isRight || isPicked) && (
+                  <span
+                    className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-white ${
+                      isRight ? "bg-sage" : "bg-clay"
+                    }`}
                   >
-                    <span className="font-display text-2xl leading-none sm:text-[1.75rem]">
-                      {choice === "vrai" ? "Vrai" : "Faux"}
-                    </span>
-                    <span
-                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-500 ${
-                        answered && isRight
-                          ? "bg-sage text-white"
-                          : answered && isPicked
-                            ? "bg-clay text-white"
-                            : "bg-espresso/[0.06] text-greige"
-                      }`}
-                    >
-                      {answered && isRight ? (
-                        <Check className="h-4 w-4" />
-                      ) : answered && isPicked ? (
-                        <Cross className="h-4 w-4" />
-                      ) : (
-                        <span className="h-1.5 w-1.5 rounded-full bg-current" />
-                      )}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+                    {isRight ? (
+                      <Check className="h-3.5 w-3.5" />
+                    ) : (
+                      <Cross className="h-3.5 w-3.5" />
+                    )}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
 
-          {/* Explication — affichée dans les deux cas -------------- */}
-          {answered && (
-            <div
-              ref={feedbackRef}
-              className={`quiz-in scroll-mt-24 border-t px-5 py-7 sm:px-10 sm:py-9 ${
-                isCorrect
-                  ? "border-sage/20 bg-sage-soft/45"
-                  : "border-clay/20 bg-clay-soft/45"
+        {/* Explication — affichée dans les deux cas --------------- */}
+        {answered && (
+          <div
+            ref={feedbackRef}
+            className={`quiz-in mt-8 scroll-mt-24 rounded-[1.4rem] border px-6 py-7 sm:px-8 ${
+              isCorrect
+                ? "border-sage/20 bg-sage-soft/45"
+                : "border-clay/20 bg-clay-soft/45"
+            }`}
+          >
+            <span
+              className={`text-[0.6rem] uppercase tracking-eyebrow ${
+                isCorrect ? "text-sage" : "text-clay"
               }`}
             >
-              <div className="flex items-center gap-2.5">
-                <span
-                  className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-white ${
-                    isCorrect ? "bg-sage" : "bg-clay"
-                  }`}
-                >
-                  {isCorrect ? (
-                    <Check className="h-4 w-4" />
-                  ) : (
-                    <Cross className="h-4 w-4" />
-                  )}
-                </span>
-                <span
-                  className={`text-[0.66rem] uppercase tracking-eyebrow ${
-                    isCorrect ? "text-sage" : "text-clay"
-                  }`}
-                >
-                  {isCorrect ? "Bonne réponse" : `Réponse : ${q.answer}`}
-                </span>
-              </div>
+              {isCorrect ? "Bonne réponse" : `Réponse : ${q.answer}`}
+            </span>
 
-              <p className="mt-4 text-[0.95rem] leading-relaxed text-ink sm:text-base">
-                {fr(isCorrect ? q.explanationCorrect : q.explanationWrong)}
-              </p>
+            <p className="mt-3.5 text-[0.95rem] leading-relaxed text-ink sm:text-base">
+              {fr(isCorrect ? q.explanationCorrect : q.explanationWrong)}
+            </p>
 
-              <button
-                type="button"
-                onClick={next}
-                className="group mt-7 flex w-full items-center justify-between gap-3 rounded-full bg-espresso py-2 pl-7 pr-2 text-[0.74rem] uppercase tracking-[0.16em] text-cream transition-colors hover:bg-[#2c241a] active:scale-[0.99] sm:w-auto"
-              >
-                {index + 1 >= total ? "Voir mon résultat" : "Question suivante"}
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cream/15 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0.5">
-                  <Arrow className="h-4 w-4" />
-                </span>
-              </button>
-            </div>
-          )}
-        </div>
-
-        {!answered && (
-          <p className="mt-5 text-center text-[0.78rem] leading-relaxed text-mute">
-            Choisissez une réponse — l&apos;explication s&apos;affiche dans tous
-            les cas.
-          </p>
+            <button
+              type="button"
+              onClick={next}
+              className="group mt-7 flex w-full items-center justify-between gap-3 rounded-full bg-espresso py-2 pl-7 pr-2 text-[0.72rem] uppercase tracking-[0.16em] text-cream transition-colors hover:bg-[#2c241a] active:scale-[0.99] sm:w-auto"
+            >
+              {index + 1 >= total ? "Voir mon résultat" : "Question suivante"}
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-cream/15 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0.5">
+                <Arrow className="h-4 w-4" />
+              </span>
+            </button>
+          </div>
         )}
       </div>
     </section>
