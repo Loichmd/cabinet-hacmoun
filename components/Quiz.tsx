@@ -74,6 +74,20 @@ const Arrow = (p: P) => (
   </svg>
 );
 
+const ArrowLeft = (p: P) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.7"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...p}
+  >
+    <path d="M19 12H5M11 18l-6-6 6-6" />
+  </svg>
+);
+
 const Trophy = (p: P) => (
   <svg
     viewBox="0 0 24 24"
@@ -294,6 +308,20 @@ export default function Quiz({
     [answers, index],
   );
 
+  /** Retour à l'étape précédente : question précédente, dernière
+   *  question depuis le résultat, page de garde depuis la question 1. */
+  const back = useCallback(() => {
+    if (stage === "result") {
+      setStage("quiz");
+      setIndex(total - 1);
+    } else if (index > 0) {
+      setIndex((i) => i - 1);
+    } else {
+      setStage("intro");
+    }
+    scrollTop();
+  }, [stage, index, total, scrollTop]);
+
   const next = useCallback(() => {
     if (index + 1 >= total) {
       const finalScore = answers.filter(
@@ -442,6 +470,18 @@ export default function Quiz({
           className="scroll-mt-24 bg-cream px-5 pt-28 pb-12 sm:px-6 sm:pt-32 sm:pb-16 lg:px-10 lg:pb-20"
         >
           <div className="mx-auto max-w-3xl">
+            <button
+              type="button"
+              onClick={back}
+              aria-label="Revenir à la dernière question"
+              className="group mb-5 inline-flex items-center gap-2.5 rounded-full py-2 pl-2 pr-5 text-[0.62rem] uppercase tracking-[0.16em] text-mute ring-1 ring-hairline transition-colors hover:text-espresso hover:ring-espresso/25 sm:mb-7"
+            >
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-espresso/[0.05] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-x-0.5">
+                <ArrowLeft className="h-3.5 w-3.5" />
+              </span>
+              Retour
+            </button>
+
             <div className="overflow-hidden rounded-[1.75rem] border border-hairline bg-porcelain sm:rounded-[2.25rem]">
               {/* Bandeau score ------------------------------------- */}
               <div className="relative overflow-hidden bg-espresso px-6 py-12 text-center sm:px-10 sm:py-16">
@@ -682,10 +722,22 @@ export default function Quiz({
       <div className="mx-auto max-w-3xl">
         {/* Progression -------------------------------------------- */}
         <div className="mb-5 sm:mb-7">
-          <div className="flex items-baseline justify-between gap-4">
-            <span className="text-[0.62rem] uppercase tracking-eyebrow text-gold">
-              {q.theme}
-            </span>
+          <div className="flex items-center justify-between gap-4">
+            <button
+              type="button"
+              onClick={back}
+              aria-label={
+                index > 0
+                  ? "Revenir à la question précédente"
+                  : "Revenir à la présentation du quiz"
+              }
+              className="group inline-flex items-center gap-2.5 rounded-full py-2 pl-2 pr-5 text-[0.62rem] uppercase tracking-[0.16em] text-mute ring-1 ring-hairline transition-colors hover:text-espresso hover:ring-espresso/25"
+            >
+              <span className="flex h-7 w-7 items-center justify-center rounded-full bg-espresso/[0.05] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:-translate-x-0.5">
+                <ArrowLeft className="h-3.5 w-3.5" />
+              </span>
+              Retour
+            </button>
             <span className="font-display text-sm text-mute">
               <span className="text-espresso">
                 {String(index + 1).padStart(2, "0")}
@@ -742,9 +794,16 @@ export default function Quiz({
         {/* Carte question ----------------------------------------- */}
         <div className="overflow-hidden rounded-[1.75rem] border border-hairline bg-porcelain sm:rounded-[2.25rem]">
           <div className="px-5 pt-8 pb-6 sm:px-10 sm:pt-12 sm:pb-9">
+            <span
+              key={`${q.question}-theme`}
+              className="quiz-in inline-flex items-center gap-2 text-[0.6rem] uppercase tracking-eyebrow text-gold"
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-champagne" />
+              {q.theme}
+            </span>
             <p
               key={q.question}
-              className="quiz-in font-display text-[clamp(1.45rem,6.2vw,2.35rem)] font-light leading-[1.18] text-espresso text-balance"
+              className="quiz-in mt-4 font-display text-[clamp(1.45rem,6.2vw,2.35rem)] font-light leading-[1.18] text-espresso text-balance"
             >
               {fr(q.question)}
             </p>
