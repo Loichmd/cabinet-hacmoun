@@ -98,16 +98,10 @@ type Stage = "intro" | "quiz" | "result";
 
 const STORE_KEY = "hacmoun-quiz-v1";
 
-type Session = {
-  sig: string;
-  stage: Stage;
-  index: number;
-  answers: (Choice | null)[];
-  best: number | null;
-};
+type Store = { sig: string; best: number | null };
 
 /** Empreinte du questionnaire : si le cabinet modifie les questions
- *  depuis le CMS, la sauvegarde devenue périmée est ignorée. */
+ *  depuis le CMS, le score enregistré devenu périmé est ignoré. */
 function signature(qs: QuizQuestion[]) {
   const s = qs.map((q) => `${q.question}#${q.answer}`).join("|");
   let h = 5381;
@@ -116,10 +110,11 @@ function signature(qs: QuizQuestion[]) {
 }
 
 /* -- Micro-store branché sur localStorage --------------------------
-   La sauvegarde est la source de vérité : le composant la lit via
-   useSyncExternalStore, ce qui restitue la progression au rechargement
-   sans décalage d'hydratation. Repli en mémoire si le stockage est
-   indisponible (navigation privée, quota). ------------------------- */
+   Seul le meilleur score y est conservé, lu via useSyncExternalStore
+   pour éviter tout décalage d'hydratation. La progression, elle, reste
+   en mémoire : recharger la page ramène donc à la page de garde avec un
+   questionnaire neuf. Repli en mémoire si le stockage est indisponible
+   (navigation privée, quota). -------------------------------------- */
 const listeners = new Set<() => void>();
 let memoryFallback: string | null = null;
 let useMemory = false;
@@ -153,33 +148,19 @@ function subscribe(listener: () => void) {
   };
 }
 
-function parseSession(
-  raw: string | null,
-  sig: string,
-  total: number,
-): Session {
-  const fresh: Session = {
-    sig,
-    stage: "intro",
-    index: 0,
-    answers: Array(total).fill(null),
-    best: null,
-  };
-  if (!raw) return fresh;
+function parseBest(raw: string | null, sig: string): number | null {
+  if (!raw) return null;
   try {
-    const p = JSON.parse(raw) as Session;
-    if (p.sig !== sig || !Array.isArray(p.answers) || p.answers.length !== total)
-      return fresh;
-    return {
-      sig,
-      stage: p.stage === "quiz" || p.stage === "result" ? p.stage : "intro",
-      index: Math.min(Math.max(p.index ?? 0, 0), total - 1),
-      answers: p.answers.map((a) => (a === "vrai" || a === "faux" ? a : null)),
-      best: typeof p.best === "number" ? p.best : null,
-    };
+    const p = JSON.parse(raw) as Store;
+    if (p.sig !== sig || typeof p.best !== "number") return null;
+    return p.best;
   } catch {
-    return fresh;
+    return null;
   }
+}
+
+function saveBest(sig: string, best: number) {
+  setRaw(JSON.stringify({ sig, best } satisfies Store));
 }
 
 /* ------------------------------------------------------------------ */
@@ -253,16 +234,18 @@ export default function Quiz({
   const total = questions.length;
   const sig = useMemo(() => signature(questions), [questions]);
 
-  /* La progression vit dans le stockage local, pas dans un état React :
-     un rechargement de page remet donc toutes les questions à jour. */
+  /* Seul le meilleur score traverse les rechargements de page. */
   const raw = useSyncExternalStore(subscribe, getRaw, () => null);
-  const session = useMemo(
-    () => parseSession(raw, sig, total),
-    [raw, sig, total],
-  );
-  const { stage, index, answers, best } = session;
+  const best = useMemo(() => parseBest(raw, sig), [raw, sig]);
 
-  /* Purement visuel, volontairement non sauvegardé. */
+  /* La partie en cours vit uniquement en mémoire : recharger la page
+     ramène donc toujours sur la page de garde, questionnaire remis à
+     zéro. */
+  const [stage, setStage] = useState<Stage>("intro");
+  const [index, setIndex] = useState(0);
+  const [answers, setAnswers] = useState<(Choice | null)[]>(() =>
+    Array(total).fill(null),
+  );
   const [isRecord, setIsRecord] = useState(false);
 
   const topRef = useRef<HTMLDivElement>(null);
@@ -272,13 +255,6 @@ export default function Quiz({
     () =>
       answers.filter((a, i) => a !== null && a === questions[i]?.answer).length,
     [answers, questions],
-  );
-
-  const commit = useCallback(
-    (patch: Partial<Session>) => {
-      setRaw(JSON.stringify({ ...session, ...patch, sig }));
-    },
-    [session, sig],
   );
 
   /* -- Navigation -------------------------------------------------- */
@@ -292,16 +268,20 @@ export default function Quiz({
 
   const start = useCallback(() => {
     setIsRecord(false);
-    commit({ stage: "quiz", index: 0, answers: Array(total).fill(null) });
+    setAnswers(Array(total).fill(null));
+    setIndex(0);
+    setStage("quiz");
     scrollTop();
-  }, [commit, total, scrollTop]);
+  }, [total, scrollTop]);
 
   const pick = useCallback(
     (choice: Choice) => {
       if (answers[index] !== null) return;
-      const nextAnswers = [...answers];
-      nextAnswers[index] = choice;
-      commit({ answers: nextAnswers });
+      setAnswers((prev) => {
+        const nextAnswers = [...prev];
+        nextAnswers[index] = choice;
+        return nextAnswers;
+      });
       window.setTimeout(
         () =>
           feedbackRef.current?.scrollIntoView({
@@ -311,7 +291,7 @@ export default function Quiz({
         120,
       );
     },
-    [answers, index, commit],
+    [answers, index],
   );
 
   const next = useCallback(() => {
@@ -319,18 +299,15 @@ export default function Quiz({
       const finalScore = answers.filter(
         (a, i) => a !== null && a === questions[i].answer,
       ).length;
-      const beaten = best !== null && finalScore > best;
-      setIsRecord(beaten);
-      commit({
-        stage: "result",
-        best: best === null || finalScore > best ? finalScore : best,
-      });
+      setIsRecord(best !== null && finalScore > best);
+      if (best === null || finalScore > best) saveBest(sig, finalScore);
+      setStage("result");
       scrollTop();
       return;
     }
-    commit({ index: index + 1 });
+    setIndex((i) => i + 1);
     scrollTop();
-  }, [index, total, answers, questions, best, commit, scrollTop]);
+  }, [index, total, answers, questions, best, sig, scrollTop]);
 
   if (total === 0) return null;
 
@@ -439,8 +416,9 @@ export default function Quiz({
 
           <Reveal delay={330}>
             <p className="mt-6 text-[0.72rem] leading-relaxed text-cream/40">
-              Votre progression est conservée sur cet appareil&nbsp;: vous
-              pouvez fermer la page et reprendre plus tard.
+              Anonyme et sans inscription. Seul votre meilleur score reste sur
+              cet appareil&nbsp;: le questionnaire, lui, repart à zéro à chaque
+              visite.
             </p>
           </Reveal>
         </div>
@@ -619,7 +597,7 @@ export default function Quiz({
                   <button
                     type="button"
                     onClick={() => {
-                      commit({ stage: "intro" });
+                      setStage("intro");
                       scrollTop();
                     }}
                     className="link-underline mx-auto mt-1 w-max text-[0.72rem] uppercase tracking-[0.16em] text-mute transition-colors hover:text-espresso"
