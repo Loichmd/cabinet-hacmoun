@@ -708,8 +708,9 @@ export default function Quiz({
   return (
     <section
       ref={topRef}
-      className="flex min-h-svh scroll-mt-24 flex-col justify-center bg-cream px-5 pt-28 pb-16 sm:px-6 sm:pt-32 sm:pb-20 lg:px-10"
+      className="flex min-h-svh scroll-mt-24 flex-col bg-cream px-5 pt-28 pb-16 sm:px-6 sm:pt-32 sm:pb-20 lg:px-10"
     >
+      {/* Fil de navigation, ancré sous le menu ------------------- */}
       <div className="mx-auto w-full max-w-2xl">
         {/* En-tête : retour + compteur + filet de progression ------ */}
         <div className="flex items-center justify-between gap-4">
@@ -741,11 +742,13 @@ export default function Quiz({
             style={{ width: `${progress}%` }}
           />
         </div>
+      </div>
 
-        {/* Question ----------------------------------------------- */}
+      {/* Question, centrée dans l'espace restant ----------------- */}
+      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center py-12 sm:py-16">
         <span
           key={`${q.question}-theme`}
-          className="quiz-in mt-12 inline-flex items-center gap-2 text-[0.6rem] uppercase tracking-eyebrow text-gold sm:mt-14"
+          className="quiz-in inline-flex w-max items-center gap-2 text-[0.6rem] uppercase tracking-eyebrow text-gold"
         >
           <span className="h-1.5 w-1.5 rounded-full bg-champagne" />
           {q.theme}
@@ -765,11 +768,11 @@ export default function Quiz({
             const isRight = q.answer === choice;
 
             let tone =
-              "border-espresso/15 text-espresso hover:border-champagne hover:bg-porcelain active:scale-[0.985]";
+              "border-hairline bg-porcelain text-espresso hover:border-champagne hover:-translate-y-0.5 hover:lift-soft active:translate-y-0 active:scale-[0.985]";
             if (answered) {
               if (isRight) tone = "border-sage/50 bg-sage-soft text-sage";
               else if (isPicked) tone = "border-clay/50 bg-clay-soft text-clay";
-              else tone = "border-espresso/8 text-mute opacity-45";
+              else tone = "border-hairline bg-porcelain/50 text-mute opacity-50";
             }
 
             return (
