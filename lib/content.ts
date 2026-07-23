@@ -85,6 +85,15 @@ export type Feature = {
   text: string;
 };
 
+export type QuizQuestion = {
+  question: string;
+  order: number;
+  theme: string;
+  answer: "vrai" | "faux";
+  explanationCorrect: string;
+  explanationWrong: string;
+};
+
 const byOrder = <T extends { order: number }>(a: T, b: T) => a.order - b.order;
 
 /* ---------- Readers ---------- */
@@ -171,4 +180,9 @@ export async function getTechnologies(): Promise<Technology[]> {
 export async function getFeatures(): Promise<Feature[]> {
   const items = await reader.collections.features.all();
   return items.map((i) => ({ ...i.entry }) as Feature).sort(byOrder);
+}
+
+export async function getQuiz(): Promise<QuizQuestion[]> {
+  const items = await reader.collections.quiz.all();
+  return items.map((i) => ({ ...i.entry }) as QuizQuestion).sort(byOrder);
 }

@@ -18,6 +18,12 @@
   --color-gold: #ad8b4f;
   --color-gold-soft: #d8c19a;
 
+  /* Semantic (quiz) — teintes chaudes, jamais criardes */
+  --color-sage: #5c7355;
+  --color-sage-soft: #e6ece2;
+  --color-clay: #a55f43;
+  --color-clay-soft: #f6e6de;
+
   /* Ink */
   --color-espresso: #211b13;
   --color-ink: #4a4035;
@@ -191,6 +197,56 @@ body {
 .link-underline:hover::after {
   transform: scaleX(1);
   transform-origin: left;
+}
+
+/* Quiz — apparition de l'explication ------------------------------- */
+@keyframes quiz-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.quiz-in {
+  animation: quiz-in 0.55s var(--ease-lux) both;
+  animation-delay: var(--quiz-delay, 0ms);
+}
+
+/* Quiz — petit rebond sur la réponse choisie ------------------------ */
+@keyframes quiz-pop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.035);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.quiz-pop {
+  animation: quiz-pop 0.5s var(--ease-spring);
+}
+
+/* Quiz — remplissage de l'anneau de score --------------------------- */
+@keyframes quiz-ring {
+  from {
+    stroke-dashoffset: var(--ring-len);
+  }
+}
+.quiz-ring {
+  animation: quiz-ring 1.6s var(--ease-lux) 0.2s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-in,
+  .quiz-pop,
+  .quiz-ring {
+    animation: none;
+  }
 }
 
 /* Floating scroll cue ------------------------------------------------ */

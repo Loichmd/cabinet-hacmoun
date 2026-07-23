@@ -276,5 +276,54 @@ export default config({
         text: fields.text({ label: "Description", multiline: true }),
       },
     }),
+
+    quiz: collection({
+      label: "Quiz parodontologie",
+      slugField: "question",
+      path: "content/quiz/*",
+      format: { data: "json" },
+      columns: ["question", "order"],
+      schema: {
+        question: fields.slug({
+          name: {
+            label: "Affirmation posée au patient",
+            description:
+              "Le patient doit répondre VRAI ou FAUX. Formulez une phrase courte et affirmative.",
+          },
+        }),
+        order: fields.number({ label: "Ordre d'apparition", defaultValue: 1 }),
+        theme: fields.select({
+          label: "Thème (petite étiquette affichée)",
+          options: [
+            { label: "Les bases", value: "Les bases" },
+            { label: "Les symptômes", value: "Les symptômes" },
+            { label: "La contamination", value: "La contamination" },
+            { label: "Le diagnostic", value: "Le diagnostic" },
+            { label: "Les traitements", value: "Les traitements" },
+            { label: "L'hygiène", value: "L'hygiène" },
+          ],
+          defaultValue: "Les bases",
+        }),
+        answer: fields.select({
+          label: "La bonne réponse",
+          options: [
+            { label: "VRAI", value: "vrai" },
+            { label: "FAUX", value: "faux" },
+          ],
+          defaultValue: "vrai",
+        }),
+        explanationCorrect: fields.text({
+          label: "Message si le patient a juste",
+          description: "Félicitez, puis expliquez pourquoi en 1 à 3 phrases.",
+          multiline: true,
+        }),
+        explanationWrong: fields.text({
+          label: "Message si le patient se trompe",
+          description:
+            "Rassurez, puis expliquez la bonne réponse en 1 à 3 phrases.",
+          multiline: true,
+        }),
+      },
+    }),
   },
 });

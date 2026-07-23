@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Phone } from "./icons";
 import type { Settings } from "@/lib/content";
 
@@ -9,6 +10,7 @@ const LINKS = [
   { label: "Spécialités", href: "/#specialites" },
   { label: "L'Expérience", href: "/#experience" },
   { label: "Équipe", href: "/#equipe" },
+  { label: "Quiz", href: "/quiz-parodontologie" },
   { label: "Contact", href: "/#contact" },
 ];
 
@@ -34,14 +36,14 @@ export default function Nav({ settings }: { settings: Settings }) {
     <>
       <header className="fixed inset-x-0 top-0 z-50 flex justify-center px-4">
         <nav
-          className={`mt-5 flex w-full max-w-5xl items-center justify-between gap-4 rounded-full border border-hairline px-3 py-2 pl-6 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+          className={`mt-5 flex w-full max-w-6xl items-center justify-between gap-4 rounded-full border border-hairline px-3 py-2 pl-6 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${
             scrolled
               ? "bg-porcelain/80 backdrop-blur-xl shadow-[0_18px_50px_-30px_rgba(33,27,19,0.5)]"
               : "bg-porcelain/40 backdrop-blur-md"
           }`}
         >
           {/* Brand */}
-          <a href="/" className="flex items-center gap-3">
+          <Link href="/" className="flex shrink-0 items-center gap-3">
             <span className="flex h-9 w-9 items-center justify-center rounded-full bg-espresso text-cream font-display text-sm">
               DH
             </span>
@@ -49,11 +51,11 @@ export default function Nav({ settings }: { settings: Settings }) {
               <span className="font-display text-base text-espresso">
                 Dr. Hacmoun
               </span>
-              <span className="text-[0.6rem] uppercase tracking-eyebrow text-mute">
+              <span className="whitespace-nowrap text-[0.6rem] uppercase tracking-eyebrow text-mute">
                 Cabinet d&apos;exception · Nice
               </span>
             </span>
-          </a>
+          </Link>
 
           {/* Desktop links */}
           <div className="hidden items-center gap-7 lg:flex">
@@ -61,7 +63,7 @@ export default function Nav({ settings }: { settings: Settings }) {
               <a
                 key={l.href}
                 href={l.href}
-                className="link-underline text-[0.78rem] uppercase tracking-[0.14em] text-ink transition-colors hover:text-espresso"
+                className="link-underline whitespace-nowrap text-[0.78rem] uppercase tracking-[0.14em] text-ink transition-colors hover:text-espresso"
               >
                 {l.label}
               </a>
@@ -81,7 +83,7 @@ export default function Nav({ settings }: { settings: Settings }) {
               href={settings.doctolib}
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden rounded-full bg-espresso px-5 py-2.5 text-[0.72rem] uppercase tracking-[0.16em] text-cream transition-colors hover:bg-[#2c241a] sm:inline-block"
+              className="hidden whitespace-nowrap rounded-full bg-espresso px-5 py-2.5 text-[0.72rem] uppercase tracking-[0.16em] text-cream transition-colors hover:bg-[#2c241a] sm:inline-block"
             >
               Prendre RDV
             </a>

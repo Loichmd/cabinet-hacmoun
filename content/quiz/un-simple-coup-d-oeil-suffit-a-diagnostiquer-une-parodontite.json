@@ -1,0 +1,8 @@
+{
+  "question": "Un simple coup d'œil suffit à diagnostiquer une parodontite.",
+  "order": 10,
+  "theme": "Le diagnostic",
+  "answer": "faux",
+  "explanationCorrect": "Bien vu. Le diagnostic est bien plus complet : examen clinique, bilan parodontal et photographique pour évaluer le déchaussement, bilan radiologique 2D et parfois 3D (CBCT), et prélèvement bactérien si nécessaire.",
+  "explanationWrong": "Il en faut nettement plus. Votre chirurgien-dentiste réalise un examen clinique, un bilan parodontal et photographique pour évaluer le déchaussement, un bilan radiologique 2D voire 3D (CBCT), et parfois un prélèvement bactérien pour identifier les germes en cause."
+}

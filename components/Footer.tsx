@@ -9,6 +9,7 @@ const COLS = [
       { label: "Le cabinet", href: "/#cabinet" },
       { label: "L'expérience", href: "/#experience" },
       { label: "Notre équipe", href: "/#equipe" },
+      { label: "Quiz gencives", href: "/quiz-parodontologie" },
       { label: "FAQ", href: "/#faq" },
     ],
   },
